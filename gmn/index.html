@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>guess the number</title>
+  <link rel="stylesheet" href="/src/output.css" />
+</head>
+
+<body>
+  <header id="box" class="bg-emerald-500 w-full">
+    <div class="flex justify-around">
+      <div class="again text-black bg-white text-3xl mt-10 rounded-3xl p-2 font-bold">
+        Again
+      </div>
+      <div class="text-white mt-10 text-6xl font-mono">Between 1 and 20</div>
+    </div>
+    <div class="text-white text-9xl flex justify-center mask-linear-from-stone-800">
+      Guess my number
+    </div>
+    <div class="number bg-white text-6xl flex justify-center mt-20 border-4">?</div>
+  </header>
+
+  <main class="flex justify-around">
+    <div class="mt-10 flex-col">
+      <input class="guess p-5 bg-white border-4" type="text">
+      <button class="btn check bg-white text-5xl text-black font-bold flex-col mt-5">
+        check!
+      </button>
+    </div>
+
+    <div class="flex-col mt-10">
+      <div class="text-zinc-400 font-semibold text-3xl message">start guessing</div>
+      <div class="text-zinc-400 font-sans text-3xl mt-5 score">score: <span>20</span></div>
+      <div class="text-3xl text-zinc-400 mt-5 highscore">highscore: <span>0</span></div>
+    </div>
+  </main>
+</body>
+
+</html>
+
+<script src="index.js"></script>

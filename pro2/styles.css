@@ -1,0 +1,60 @@
+.container {
+    width: 100%;
+    background-color: rgb(212, 131, 131);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    align-items: center;
+    position: relative;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+.con1 {
+    width: 500px;
+    height: 500px;
+
+}
+
+.toggle {
+    background-color: rgb(114, 0, 0);
+}
+
+.con2 {
+    width: 500px;
+    height: 500px;
+    /* background-color: rgb(116, 72, 72); */
+}
+
+.cs {
+    display: flex;
+    flex-direction: column;
+    margin-top: 100px;
+}
+
+.wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    position: absolute;
+}
+
+.newgame,
+.rolldice,
+.hold {
+    background-color: white;
+    padding: 10px;
+    border-radius: 15px;
+}
+
+.hidden {
+    display: none;
+}
+
+.player-winner {
+    background-color: green;
+}

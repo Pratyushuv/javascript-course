@@ -1,0 +1,45 @@
+.header1 {
+    display: flex;
+    justify-content: space-between;
+}
+
+.con12 {
+    display: flex;
+    justify-content: space-between;
+}
+
+.movement-row {
+    display: flex;
+    gap: 30px;
+}
+
+.movements {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    overflow-y: auto;
+    width: 600px;
+    max-height: 350px;
+    border: 2px dashed red;
+}
+
+.con3 {
+    display: flex;
+
+    justify-content: space-between;
+}
+
+.con3-12 {
+    display: flex;
+    flex-direction: column;
+}
+
+.summary {
+    display: flex;
+    gap: 50px;
+    margin-top: 30px;
+}
+
+.app {
+    opacity: 0.1;
+}
