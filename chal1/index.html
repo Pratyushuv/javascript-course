@@ -26,7 +26,7 @@
         <div class="con12">
             <div class="con1">
                 <h1>current balance</h1>
-                <h4>As of 05/03/2003</h4>
+                <h4 class="date">As of 05/03/2003</h4>
             </div>
 
             <div class="con2">0000$</div>
@@ -49,6 +49,7 @@
                     <div class="in">IN 0000$</div>
                     <div class="out">0000$</div>
                     <div class="interest">0000$</div>
+                    <button class="button-sort">SORT</button>
                 </div>
             </div>
 
@@ -67,10 +68,26 @@
                 <div class="b2">
                     <h1>Request loan</h1>
                     <div class="text">
-                        <input type="text" placeholder="Amount">
-                        <button>Request</button>
+                        <form action="">
+                            <input type="text" placeholder="Amount" class="loan-input">
+                            <button class="button-loan">Request</button>
+                        </form>
                     </div>
                 </div>
+
+                <div class="b3">
+                    <h1>Close Account</h1>
+                    <div class="text">
+                        <form action="
+                        ">
+                            <input type="text" placeholder="Confirm User" class="confirm-user">
+                            <input type="password" placeholder="Confirm PIN" class="confirm-pin">
+                            <button class="input-close">Close</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="timer"></div>
             </div>
 
             <!-- 

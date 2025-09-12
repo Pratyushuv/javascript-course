@@ -566,9 +566,8 @@ for (const flight of flights.split('+')) {
 
 
 
-
-
-
+//splice method syntax- accounts.splice(starting incex , number of elements to be deleted)
+//note that spice chages the orginal array or mutates the orginal array
 
 
 

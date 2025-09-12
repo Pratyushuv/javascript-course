@@ -311,3 +311,6 @@ const checkDogs = function (arr1, arr2) {
 
 
 checkDogs(arr1, arr2);
+
+
+

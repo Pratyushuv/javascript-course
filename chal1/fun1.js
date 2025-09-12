@@ -192,3 +192,41 @@ console.log(movements)
 console.log(firstWithrawal)
 
 //so in the project we can acces a object based on a certain property using find method
+
+
+//findIndex method
+
+//findIndex method works almost same as find
+//findIndex returns the index of founded element
+///both find and findIndex get acces to the index and array
+
+//findIndex takes in a callback function
+const index = accounts.findIndex(acc => acc.username === currentAccount.username)
+
+
+//new methods that were added
+//FindLast and FindLastIndex
+//they do the same as Find and FindIndex but they start searching from last to first element
+//includes method is used to check if a elemnt exist in the array of string, it returns true or false
+//that is checking any element in array is equal to a number given, it checks equality
+//what if we want to test it for condition instead
+//thats where the sum metod comes in
+///eg if we want to know was there any deposits in this account ie positive deposits
+
+//some and every method
+
+//Another method is Every method
+//Every Method is similar to some method
+//but 'every' only returns true if every element in the array satisfies the condition that we pass in.
+
+
+//we always wrote the callback function directly inside array method but instead we can write it separately and pass it to the array methods as callback
+
+//sepate callback
+const deposit = mov => mov > 0;
+console.log(movements.some(deposit));
+console.log(movements.every(deposit));
+console.log(movements.filter(deposit));
+
+//more array methods
+
