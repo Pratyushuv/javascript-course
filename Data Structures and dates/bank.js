@@ -261,20 +261,37 @@ createUserName(accounts);
 
 
 const startLogOutTimer = function () {
+
+    const timer1 = () => {
+
+        const min = String(Math.trunc(time / 60)).padStart(2, 0); //we need to convert it to string inorder to call padStart function
+        const sec = String((time % 60)).padStart(2, 0);
+        //In each call, print the remaining time to UI
+        timerButton.textContent = `you will be logged out in ${min}:${sec}`
+        //decrease by 1 second
+
+
+        //when 0 seconds, stop timer and log out user
+        if (time === 0) {
+            clearInterval(timer); //stop the setInterval function
+
+            //logout
+            label1.textContent = 'login to get started'
+            containerApp.style.opacity = 0;
+        }
+        time--;
+    }
     //set time to 5 minutes
 
-    let time = 50
+    let time = 80
 
     //call the timer every second
-    setInterval(() => {
-        //In each call, print the remaining time to UI
-        timerButton.textContent = time
-        time--;
-    }, 1000)
+    timer1();
+    const timer = setInterval(timer1, 1000)
+
+    return timer;
 
 
-
-    //when 0 seconds, stop timer and log out user
 }
 
 
@@ -291,7 +308,7 @@ const startLogOutTimer = function () {
 
 
 //event handler
-let currentAccount; //we declare this outside because we need this information again later in another function 
+let currentAccount, timer; //we declare this outside because we need this information again later in another function 
 //ie when we transfer money , we need to know from which acount the is transfered 
 
 // currentAccount = account1;
@@ -357,7 +374,8 @@ inputLogin.addEventListener('click', function (e) {
 
         //update UI
         UpdateUi(currentAccount);
-        startLogOutTimer();
+        if (timer) clearInterval(timer);
+        timer = startLogOutTimer();
     }
     // const cpin = accounts.find(acc => acc.pin === Number(inputPin.value))
 
@@ -388,6 +406,10 @@ transferButton.addEventListener('click', function (e) {
         recepient.movementsDates.push(new Date().toISOString());
         console.log('transfer valid')
         UpdateUi(currentAccount);
+
+        //reset timer
+        clearInterval(timer);
+        timer = startLogOutTimer()
     }
 
 
@@ -408,7 +430,13 @@ loanButton.addEventListener('click', function (e) {
             currentAccount.movementsDates.push(new Date().toISOString());
             // console.log(currentAccount.movements);
             UpdateUi(currentAccount);
+
+            //reset timer
+            clearInterval(timer);
+            timer = startLogOutTimer()
         }, 2500)
+
+
     }
     else {
         console.log('loan rejected')
@@ -629,3 +657,6 @@ console.log(future)
 
 
 //implement a automatic logout function with timer
+
+
+//if we want to make changes to a function based activity of different function we must make the variable that hold that function persist by making it a global variable
