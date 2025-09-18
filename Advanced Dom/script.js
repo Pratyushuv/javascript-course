@@ -272,16 +272,258 @@ window.addEventListener('scroll', function () {
 // sticky nav using IntersectionObserverAPI
 
 const header = document.querySelector('.header');
+const navHeight = nav.getBoundingClientRect().height;
+
 
 const stickyNav = function (entries) {
     const [entry] = entries; //same as writing entries[0]
     if (!entry.isIntersecting) nav.classList.add('sticky'); //it will add and remove class according to scrolling direction
     else nav.classList.remove('sticky');
-}
+};
 
 
 const headerObserver = new IntersectionObserver(stickyNav, {
     root: null,
     threshold: 0,
-    rootMargin: '-90px', //here the navbar is displayed 90px before the target is reached
+    rootMargin: `-${navHeight}px`, //here the navbar is displayed 90px before the target is reached
 });
+
+headerObserver.observe(header);
+
+
+
+
+//Revealing Elements on scroll
+
+//reveal sections
+
+const allSection = document.querySelectorAll('.section')
+const revealSection = function (entries, observer) { //we can use the target to know which section is intersected
+    entries.forEach(entry => {
+        // console.log(entry.target);
+        if (!entry.isIntersecting) return;
+        entry.target.classList.remove('section--hidden');
+        //we only need to observe at beginning
+        observer.unobserve(entry.target);
+    })
+
+}
+const sectionObserver = new IntersectionObserver(revealSection, {
+    root: null, //root here is the viewport
+    threshold: 0.15, //section is revealed only when its 15% visible
+}) //takes 2 arguments the callback function and object of options
+//in this case we want to observe all the 4 sections
+
+allSection.forEach(function (section) {
+    sectionObserver.observe(section); //here all sections will be observed at beginning
+    section.classList.add('section--hidden');
+})
+
+
+//lazy Loading images
+//images have biggest impact on page loading
+//the main thing in lazy loading is that a low resolution image displayed at beggining
+//the high res image is in the data-src attribute 
+
+const imgTargets = document.querySelectorAll('img[data-src]'); //selects all img element that have the data-src attribute
+console.log(imgTargets);
+
+const loadImg = function (entries, observer) {
+    const [entry] = entries;
+    // console.log(entry)
+    if (!entry.isIntersecting) return;
+
+    //replace src with data-src
+    entry.target.src = entry.target.dataset.src  //dataset is where data properties are stored
+
+    entry.target.addEventListener('load', function () { //the blur will dissappear when the the image is loaded, // load is used when we want the code to be executed only after the the image is loaded
+        entry.target.classList.remove('lazy-img')
+
+    })
+
+    observer.unobserve(entry.target)
+}
+
+const imgObserver = new IntersectionObserver(loadImg, {
+    root: null,
+    threshold: 0,
+    rootMargin: '-100px' //to make the image load early, to make the image load earlier before the threshold is reached, ie before 200px before any images is loaded
+})
+
+imgTargets.forEach(img => imgObserver.observe(img));
+
+
+
+
+//BUILDING SLIDER COMPONENT
+//note- we can also read the lenghth property on the nodelist
+
+const slider = function () {
+
+
+
+    const slides = document.querySelectorAll('.slide');
+    const btnLeft = document.querySelector('.slider__btn--left');
+    const btnRight = document.querySelector('.slider__btn--right');
+    const dotContainer = document.querySelector('.dots');
+
+    let curSlide = 0;
+    const maxSlide = slides.length;
+
+
+    //.adding active class to dots
+    const ActivateDot = function (slide) {
+        //adding active class to dots
+        //first remove active class from all dot class
+        document.querySelectorAll('.dots__dot').forEach((d) => d.classList.remove('dots__dot--active'))
+        //add active class based on data attribute
+
+        document.querySelector(`.dots__dot[data-slide="${slide}"]`).classList.add('dots__dot--active') //we can use brackets to access element based on the attribute and its value
+    }
+
+    //adding dots
+    const createDots = function () {
+        slides.forEach(function (_, i) { //we dont need the slide , we need the index to know how many slides are there
+            dotContainer.insertAdjacentHTML('beforeend', `<button class="dots__dot" data-slide="${i}"></button>`)
+
+        })
+    }
+
+
+
+
+
+
+    //code refacor- ffunction for going to next slide
+    const goToSlide = function (slide) {
+        slides.forEach((s, i) => (s.style.transform = `translateX(${100 * (i - slide)}%)`)
+        );
+    }
+
+    const init = function () {
+        createDots();
+        ActivateDot(0);
+        goToSlide(0);
+    }
+
+    init();
+
+
+    //aligning each slide in its initial position
+    //slide will be 0 and i -slide will always be i and position each slide in its position
+
+    const nextSlide = function () {
+        curSlide++;
+        if (curSlide === maxSlide) {
+            curSlide = 0;
+        }
+
+        goToSlide(curSlide)
+        ActivateDot(curSlide);
+    };
+
+    const prevSlide = function () {
+
+        if (curSlide === 0) {
+            curSlide = maxSlide
+        }
+        curSlide--;
+        goToSlide(curSlide);
+        ActivateDot(curSlide);
+
+    }
+
+    //next Slide
+
+    btnRight.addEventListener('click', nextSlide); //active slide is the one we want to be tanslateX = 0% 
+    btnLeft.addEventListener('click', prevSlide);
+
+
+    //adding keyboard event for moving slides with left and right arrow
+    //we handle keyboard events in document
+
+    document.addEventListener('keydown', function (e) { //keys are accessed with e(event) object 
+        console.log(e);
+        // if (e.key === 'ArrowLeft') {
+        //     prevSlide(); //one of the reason code was refactored as separate function
+        // }
+
+        //we could have also used shortcircuiting
+        (e.key === 'ArrowLeft') && prevSlide()
+
+
+        //or (both different)
+
+        if (e.key === 'ArrowRight') {
+            nextSlide();
+        }
+    })
+
+    //here dots class container 3 dots class which contain the data attribute which is used to determine which slide is to be displayed
+
+    dotContainer.addEventListener('click', function (e) {
+        if (e.target.classList.contains('.dot__dots'));
+        // console.log("dot");
+
+        curSlide = Number(e.target.dataset.slide);
+        console.log(curSlide);
+
+        goToSlide(curSlide);
+        ActivateDot(curSlide)
+
+
+
+    })
+}
+slider();
+
+
+
+
+
+
+
+
+//LifeCycle Dom events
+//lifecycle mean from point where user access the page and leaves the page
+//domContentLoaded is fired by document as soon as html is completely parsed (ie html has been converted into Dom tree)
+
+document.addEventListener('DOMContentLoaded', function (e) {
+    console.log('HTML parsed and DOM tree built!', e)
+})
+
+//the load event is fired by window as soon as html only is parsed and also images and external images, css are loaded
+
+window.addEventListener('load', function (e) {
+    console.log('Page fully loaded');
+})
+
+window.addEventListener('beforeunload', function (e) {// this event is created immediately before a user is about to leave a page
+    e.preventDefault(e);
+    e.returnValue = '';
+
+})
+
+//this even is used to ask user if theyare 100% sure that they want to leave the page
+
+
+//different way of loading a javascript script into html
+
+//we can add async attribute to the script tag or defer attribute to script tag
+//this attributes influence the way javascript is fetched or downloaded and executed
+
+//when async is used the script is loaded at the same time when html is parsed
+//the script is downloaded aynchronously then its executed right away in  asynchronous way
+//so the html code have to wait being parsed
+
+//when defer is used the js is fetched asynchrrously but execution only start after parsing the html, here html parsing is never interrupted
+//these occurs wehen async and defer is specified in head and not body, in body it does not makes sense because in body fetching and executing script happen only after parsing the html
+
+//in async domContentloadeed does not wait for async scripts
+
+//using defer is the best solution
+// //in defer scripts are executed in order
+// acripts are fetched asynchronously and executed after the html is completely parsed
+
+
+//for any code your code need not interact with , using async is fine
